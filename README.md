@@ -18,7 +18,7 @@ static        scratch + /etc/passwd, /etc/group, CA-Bundle   → Go, Rust (stati
 | [base](images/base) | `13.7`, `13.7-debug` | static + glibc, libssl, tzdata |
 | [node](images/node) | `24.22.1`, `24.22.1-13.7`, jeweils auch `-debug` | base + Node.js 24 LTS |
 | [python](images/python) | `3.13.5`, `3.13.5-13.7`, jeweils auch `-debug` | base + Python 3.13 aus Debian |
-| [java](images/java) | `21.0.13`, `21.0.13-13.7`, jeweils auch `-debug` | base + OpenJDK 21 (JRE headless) aus Debian |
+| [java](images/java) | `21.0.13.1`, `21.0.13.1-13.7`, jeweils auch `-debug` | base + OpenJDK 21 (JRE headless) aus Debian |
 
 Alle Images sind öffentlich unter `ghcr.io/thetekbrain/images/<name>`, signiert und mit SBOM, VEX und SLSA-Provenance versehen (siehe [Image verifizieren](#image-verifizieren)).
 

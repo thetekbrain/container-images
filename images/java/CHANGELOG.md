@@ -1,5 +1,13 @@
 # Changelog java
 
+## 21.0.13.1 – 2026-11-25
+
+Sicherheitsupdate außer der Reihe (Debian trixie-security, 2026-11-19).
+
+- `openjdk-21-jre-headless` `21.0.13.1+2-1~deb13u1` (trixie-security), Snapshot `20261119T110923Z` (`DEBIAN_SNAPSHOT`, auch für die Beispiel-App mit `openjdk-21-jdk-headless` derselben Version). Behebt CVE-2026-114938 (CRITICAL), CVE-2026-114939, CVE-2026-114940, CVE-2026-114941, CVE-2026-114942 (HIGH) und CVE-2026-114820 (CRITICAL, eMudhra-Misstrauen); dessen Eintrag „akzeptiert, bis es einen Fix gibt“ ist aus [vex.json](vex.json) entfernt.
+- `zlib1g` aus base jetzt `1:1.3.dfsg+really1.3.1-1+deb13u1` (CVE-2026-85091, HIGH, Heap-Überlauf in `gz_vacate()`).
+- Neu bewertet in [vex.json](vex.json), „akzeptiert, bis es einen Fix gibt“: CVE-2026-107494 und CVE-2026-124709 (HIGH, DoS in der QUIC-Verarbeitung von `libssl3t64` 3.5.7-1~deb13u3). Betrifft nur Programme, die QUIC über libssl sprechen; Debian hat noch keinen Fix.
+
 ## 21.0.13 – 2026-10-30
 
 Erste Version, mit `-debug`-Variante. Erster Nutzer: GraphHopper 11.1 für Sangkhaya.

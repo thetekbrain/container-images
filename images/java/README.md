@@ -1,13 +1,13 @@
 # java
 
-`ghcr.io/thetekbrain/images/java:21.0.13` (auch `21.0.13-13.7`) · Debug: `java:21.0.13-debug`
+`ghcr.io/thetekbrain/images/java:21.0.13.1` (auch `21.0.13.1-13.7`) · Debug: `java:21.0.13.1-debug`
 
 OpenJDK 21 (JRE headless) aus Debian 13.7 auf `base`, für Java-Webapps und Fat-JARs wie GraphHopper.
 
 ## Was es ist
 
 - Alles aus [base](../base).
-- Das JRE aus dem Debian-Paket `openjdk-21-jre-headless` (21.0.13+9-1~deb13u2) unter `/usr/lib/jvm/java-21-openjdk-<arch>`, mit allen Modulen (`lib/modules`) und den CDS-Archiven (`lib/server/classes*.jsa`). Die JVM startet mit Class Data Sharing (`java -version` meldet `sharing`).
+- Das JRE aus dem Debian-Paket `openjdk-21-jre-headless` (21.0.13.1+2-1~deb13u1) unter `/usr/lib/jvm/java-21-openjdk-<arch>`, mit allen Modulen (`lib/modules`) und den CDS-Archiven (`lib/server/classes*.jsa`). Die JVM startet mit Class Data Sharing (`java -version` meldet `sharing`).
 - `/usr/bin/java` und `/usr/lib/jvm/default-java` als Symlinks, an Stelle von Debians alternatives.
 - Die Konfiguration unter `/etc/java-21-openjdk` wie bei Debian (`java.security`, `net.properties`, `jvm-<arch>.cfg` …).
 - **Truststore** `/etc/ssl/certs/java/cacerts`, auf den `lib/security/cacerts` zeigt. Den erzeugt der Build mit [cacerts/CaCerts.java](cacerts/CaCerts.java) aus dem CA-Bundle des Images (`/etc/ssl/certs/ca-certificates.crt`), dieselben 148 Zertifikate. Er ist ein PKCS12 ohne Passwort und ohne MAC, also reproduzierbar.
@@ -41,7 +41,7 @@ Den exakten Inhalt legt [expected-files.txt](expected-files.txt) fest. Jede nati
 Pure-Java-Apps brauchen nur ein JAR; die Debian-Version spielt für den Bytecode keine Rolle. JARs mit nativen Teilen (JNI) baut man auf Debian 13.7, damit sie zur glibc passen. Ein Fat-JAR wie GraphHopper:
 
 ```dockerfile
-FROM ghcr.io/thetekbrain/images/java:21.0.13@sha256:<digest>
+FROM ghcr.io/thetekbrain/images/java:21.0.13.1@sha256:<digest>
 COPY graphhopper-web-11.1.jar config.yml /app/
 WORKDIR /app
 EXPOSE 8989
@@ -74,5 +74,5 @@ docker run --read-only --cap-drop ALL --security-opt no-new-privileges --tmpfs /
 Fehlersuche mit Shell (nie im Betrieb):
 
 ```bash
-docker run --rm -it --entrypoint sh ghcr.io/thetekbrain/images/java:21.0.13-debug
+docker run --rm -it --entrypoint sh ghcr.io/thetekbrain/images/java:21.0.13.1-debug
 ```

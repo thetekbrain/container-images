@@ -1,5 +1,10 @@
 # Changelog base
 
+## 13.7 – 2026-11-25 (Sicherheitsupdate)
+
+- `zlib1g` `1:1.3.dfsg+really1.3.1-1+deb13u1` statt `+b1`: behebt CVE-2026-85091 (HIGH, Heap-Überlauf in `gz_vacate()`). Liegt seit `20261107T075304Z` in trixie-security, aber in keinem Builder-Image; `DEBIAN_SNAPSHOT=20261119T110923Z` (alle übrigen Pins dort unverändert vorhanden, geprüft gegen die Paketlisten von `debian` und `debian-security` für amd64 und arm64).
+- Neu bewertet in [vex.json](vex.json), „akzeptiert, bis es einen Fix gibt“: CVE-2026-107494 und CVE-2026-124709 (HIGH, DoS in der QUIC-Verarbeitung von `libssl3t64` 3.5.7-1~deb13u3). Betrifft nur Programme, die QUIC über libssl sprechen; Debian hat noch keinen Fix.
+
 ## 13.7 – 2026-10-26 (Nachtrag, Build-Korrektur)
 
 - Behoben: Die CI hat dieses Image bisher auf dem Eltern-Image aus der Registry gebaut statt auf dem im selben Lauf frisch gebauten, weil BuildKit `FROM <name>:<tag>` aus der Registry auflöst, sobald es dort existiert. Betroffen waren die Veröffentlichungen der Commits `d485d40`, `6141d4f` und `58c2f24`: Ihr Eltern-Image war jeweils das des vorigen Laufs. Es unterschied sich vom frischen nur in Zeitstempeln und Labels, nicht im Inhalt. Das Eltern-Image wird jetzt per Digest des lokal gebauten Images übergeben.

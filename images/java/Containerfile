@@ -14,13 +14,13 @@ COPY --from=shared scripts/ /usr/local/lib/fabrik/
 COPY --from=parent /var/lib/dpkg/status.d/ /parent-status/
 COPY --from=parent /etc/ssl/certs/ca-certificates.crt /parent-ca/ca-certificates.crt
 COPY cacerts/CaCerts.java /usr/local/src/CaCerts.java
-# OpenJDK 21.0.13 (Sicherheitsupdate) liegt seit 20261027T195512Z in trixie-security, aber
+# OpenJDK 21.0.13.1 (Sicherheitsupdate) liegt seit 20261119T110923Z in trixie-security, aber
 # noch in keinem Builder-Image; DEBIAN_SNAPSHOT nimmt diesen Snapshot (siehe extract-debs.sh).
 # libc-bin (gleiche Version wie libc6 in base) nur für die Locale C.utf8.
-ARG DEBIAN_SNAPSHOT=20261027T195512Z
+ARG DEBIAN_SNAPSHOT=20261119T110923Z
 RUN DEBIAN_SNAPSHOT=$DEBIAN_SNAPSHOT /usr/local/lib/fabrik/extract-debs.sh /stage \
 		libc-bin=2.41-12+deb13u4 \
-		openjdk-21-jre-headless=21.0.13+9-1~deb13u2
+		openjdk-21-jre-headless=21.0.13.1+2-1~deb13u1
 
 # Aus dem Paket nur das JRE unter /usr/lib/jvm und seine Konfiguration unter /etc:
 # ohne die Werkzeuge keytool, rmiregistry, jpackage, ohne jexec und Handbuchseiten;

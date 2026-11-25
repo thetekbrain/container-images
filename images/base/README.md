@@ -13,7 +13,7 @@ Alles aus [static](../static), dazu aus entpackten Debian-Paketen:
 | `libc6` | 2.41-12+deb13u4 | Loader und Laufzeitbibliotheken von glibc |
 | `libgcc-s1` | 14.2.0-19 | `libgcc_s.so.1` (lädt glibc für `pthread_cancel`) |
 | `libssl3t64` | 3.5.7-1~deb13u3 | `libssl.so.3`, `libcrypto.so.3` |
-| `libzstd1`, `zlib1g` | 1.5.7+dfsg-1, 1:1.3.dfsg+really1.3.1-1+b1 | Abhängigkeiten von libcrypto |
+| `libzstd1`, `zlib1g` | 1.5.7+dfsg-1, 1:1.3.dfsg+really1.3.1-1+deb13u1 | Abhängigkeiten von libcrypto |
 | `tzdata` | 2026c-0+deb13u1 | `/usr/share/zoneinfo`, `/etc/localtime` → UTC |
 
 Außerdem:

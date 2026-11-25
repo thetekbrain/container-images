@@ -9,5 +9,36 @@
       "name": "ghcr.io/thetekbrain/images/node"
     }
   },
-  "vulnerabilities": []
+  "vulnerabilities": [
+    {
+      "id": "CVE-2026-107494",
+      "analysis": {
+        "state": "exploitable",
+        "response": [
+          "update"
+        ],
+        "detail": "DoS durch unbegrenzt gepufferte QUIC-Frames in libssl. Betrifft nur Programme, die selbst QUIC über libssl sprechen (OSSL_QUIC_*); TLS über TCP ist nicht betroffen, Python (ssl), Node und Java nutzen libssl nicht für QUIC. Debian hat am 2026-11-25 keinen Fix; akzeptiert, bis einer verfügbar ist (dann neu bauen)."
+      },
+      "affects": [
+        {
+          "ref": "pkg:deb/debian/libssl3t64@3.5.7-1~deb13u3"
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-124709",
+      "analysis": {
+        "state": "exploitable",
+        "response": [
+          "update"
+        ],
+        "detail": "DoS durch ein Speicherleck in der QUIC-Stream-Verarbeitung von libssl. Betrifft nur Programme, die selbst QUIC über libssl sprechen (OSSL_QUIC_*); TLS über TCP ist nicht betroffen, Python (ssl), Node und Java nutzen libssl nicht für QUIC. Debian hat am 2026-11-25 keinen Fix; akzeptiert, bis einer verfügbar ist (dann neu bauen)."
+      },
+      "affects": [
+        {
+          "ref": "pkg:deb/debian/libssl3t64@3.5.7-1~deb13u3"
+        }
+      ]
+    }
+  ]
 }

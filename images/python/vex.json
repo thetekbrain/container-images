@@ -166,6 +166,141 @@
           "ref": "pkg:deb/debian/libuuid1@2.41.5-0+deb13u1"
         }
       ]
+    },
+    {
+      "id": "CVE-2026-107494",
+      "analysis": {
+        "state": "exploitable",
+        "response": [
+          "update"
+        ],
+        "detail": "DoS durch unbegrenzt gepufferte QUIC-Frames in libssl. Betrifft nur Programme, die selbst QUIC über libssl sprechen (OSSL_QUIC_*); TLS über TCP ist nicht betroffen, Python (ssl), Node und Java nutzen libssl nicht für QUIC. Debian hat am 2026-11-25 keinen Fix; akzeptiert, bis einer verfügbar ist (dann neu bauen)."
+      },
+      "affects": [
+        {
+          "ref": "pkg:deb/debian/libssl3t64@3.5.7-1~deb13u3"
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-124709",
+      "analysis": {
+        "state": "exploitable",
+        "response": [
+          "update"
+        ],
+        "detail": "DoS durch ein Speicherleck in der QUIC-Stream-Verarbeitung von libssl. Betrifft nur Programme, die selbst QUIC über libssl sprechen (OSSL_QUIC_*); TLS über TCP ist nicht betroffen, Python (ssl), Node und Java nutzen libssl nicht für QUIC. Debian hat am 2026-11-25 keinen Fix; akzeptiert, bis einer verfügbar ist (dann neu bauen)."
+      },
+      "affects": [
+        {
+          "ref": "pkg:deb/debian/libssl3t64@3.5.7-1~deb13u3"
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-119373",
+      "analysis": {
+        "state": "exploitable",
+        "response": [
+          "update"
+        ],
+        "detail": "Heap-Überlauf in FTS5 (DoS); betrifft Apps, die nicht vertrauenswürdige SQLite-Datenbanken oder FTS5-Abfragen verarbeiten (sqlite3-Modul). Debian hat am 2026-11-25 keinen Fix; akzeptiert, bis einer verfügbar ist (dann neu bauen)."
+      },
+      "affects": [
+        {
+          "ref": "pkg:deb/debian/libsqlite3-0@3.46.1-7+deb13u2"
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-119374",
+      "analysis": {
+        "state": "exploitable",
+        "response": [
+          "update"
+        ],
+        "detail": "Codeausführung über einen manipulierten FTS5-Index; betrifft Apps, die nicht vertrauenswürdige SQLite-Datenbankdateien öffnen (sqlite3-Modul). Debian hat am 2026-11-25 keinen Fix; akzeptiert, bis einer verfügbar ist (dann neu bauen)."
+      },
+      "affects": [
+        {
+          "ref": "pkg:deb/debian/libsqlite3-0@3.46.1-7+deb13u2"
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-119379",
+      "analysis": {
+        "state": "exploitable",
+        "response": [
+          "update"
+        ],
+        "detail": "Codeausführung über manipulierte Session-Changesets; die Session-Erweiterung ist über das sqlite3-Modul von Python nicht erreichbar, betrifft nur Programme, die sie per C-API nutzen. Debian hat am 2026-11-25 keinen Fix; akzeptiert, bis einer verfügbar ist (dann neu bauen)."
+      },
+      "affects": [
+        {
+          "ref": "pkg:deb/debian/libsqlite3-0@3.46.1-7+deb13u2"
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-113351",
+      "analysis": {
+        "state": "exploitable",
+        "response": [
+          "update"
+        ],
+        "detail": "DoS in expat (XML_ParserReset); betrifft Apps, die nicht vertrauenswürdiges XML parsen (xml.etree, xml.dom, pyexpat). Debian hat am 2026-11-25 keinen Fix; akzeptiert, bis einer verfügbar ist (dann neu bauen)."
+      },
+      "affects": [
+        {
+          "ref": "pkg:deb/debian/libexpat1@2.9.0-1~deb13u1"
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-115506",
+      "analysis": {
+        "state": "exploitable",
+        "response": [
+          "update"
+        ],
+        "detail": "DoS in expat (verzögert erkannte Entity-Amplification); betrifft Apps, die nicht vertrauenswürdiges XML parsen (xml.etree, xml.dom, pyexpat). Debian hat am 2026-11-25 keinen Fix; akzeptiert, bis einer verfügbar ist (dann neu bauen)."
+      },
+      "affects": [
+        {
+          "ref": "pkg:deb/debian/libexpat1@2.9.0-1~deb13u1"
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-117610",
+      "analysis": {
+        "state": "exploitable",
+        "response": [
+          "update"
+        ],
+        "detail": "DoS in expat (NULL-Zeiger bei externen Entities); betrifft Apps, die nicht vertrauenswürdiges XML mit externen Entities parsen. Debian hat am 2026-11-25 keinen Fix; akzeptiert, bis einer verfügbar ist (dann neu bauen)."
+      },
+      "affects": [
+        {
+          "ref": "pkg:deb/debian/libexpat1@2.9.0-1~deb13u1"
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-118370",
+      "analysis": {
+        "state": "exploitable",
+        "response": [
+          "update"
+        ],
+        "detail": "DoS in expat (Integer-Überlauf bei Attributen); betrifft Apps, die nicht vertrauenswürdiges XML parsen (xml.etree, xml.dom, pyexpat). Debian hat am 2026-11-25 keinen Fix; akzeptiert, bis einer verfügbar ist (dann neu bauen)."
+      },
+      "affects": [
+        {
+          "ref": "pkg:deb/debian/libexpat1@2.9.0-1~deb13u1"
+        }
+      ]
     }
   ]
 }
