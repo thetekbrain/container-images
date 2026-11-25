@@ -1,5 +1,12 @@
 # Changelog base
 
+## 13.8 – 2026-11-25 (Debian-Point-Release und Sicherheitsupdate)
+
+- `libzstd1` `1.5.7+dfsg-1+deb13u1`: behebt CVE-2026-124851 (HIGH, Offenlegung eines internen Puffers beim Dekomprimieren, DSA-6657-1). Liegt seit `20261124T215723Z` in trixie-security; der Builder beruht auf `20261123T000000Z`, deshalb `DEBIAN_SNAPSHOT=20261124T215723Z`. Alle übrigen Pins sind dort unverändert vorhanden (geprüft mit `apt-cache policy` für amd64 und arm64).
+- Aus Debian 13.8: `libc6` `2.41-12+deb13u5`, `libssl3t64` `3.5.9-1~deb13u1`, `tzdata` `2026f-0+deb13u1`. Unverändert: `libgcc-s1`/`gcc-14-base` `14.2.0-19`, `zlib1g` `1:1.3.dfsg+really1.3.1-1+deb13u1`, `busybox-static` `1:1.37.0-6+b9` (nur -debug).
+- Builder `debian:13.8-slim@sha256:8aa5a7bf5a1955bddbe7d74fcdd0b91ab30e74362a8b73af672b0481b35b44a0`.
+- [vex.json](vex.json): Die Bewertungen von CVE-2026-107494 und CVE-2026-124709 (QUIC-DoS in libssl) gelten jetzt für `libssl3t64` 3.5.9-1~deb13u1; laut Debian-Tracker ist auch diese Version betroffen, einen Fix gibt es noch nicht.
+
 ## 13.7 – 2026-11-25 (Sicherheitsupdate)
 
 - `zlib1g` `1:1.3.dfsg+really1.3.1-1+deb13u1` statt `+b1`: behebt CVE-2026-85091 (HIGH, Heap-Überlauf in `gz_vacate()`). Liegt seit `20261107T075304Z` in trixie-security, aber in keinem Builder-Image; `DEBIAN_SNAPSHOT=20261119T110923Z` (alle übrigen Pins dort unverändert vorhanden, geprüft gegen die Paketlisten von `debian` und `debian-security` für amd64 und arm64).

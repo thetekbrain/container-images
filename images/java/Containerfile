@@ -2,24 +2,21 @@
 
 # java: base + OpenJDK 21 (JRE headless) aus dem entpackten Debian-Paket. Nur das Programm
 # java, keine Shell. Den Truststore cacerts erzeugt der Build aus dem CA-Bundle des Images.
-ARG PARENT_IMAGE=ghcr.io/thetekbrain/images/base:13.7
+ARG PARENT_IMAGE=ghcr.io/thetekbrain/images/base:13.8
 
 FROM ${PARENT_IMAGE} AS parent
 
 # Builder auf der Zielplattform: ldd muss libjvm.so der Zielarchitektur auflösen, und das
 # JRE selbst erzeugt den Truststore.
-FROM debian:13.7-slim@sha256:62bd423aeee912639ca8ee681c2b762cb3e25137e0a92b20be455898a9f034ad AS builder
+FROM debian:13.8-slim@sha256:8aa5a7bf5a1955bddbe7d74fcdd0b91ab30e74362a8b73af672b0481b35b44a0 AS builder
 ARG SOURCE_DATE_EPOCH
 COPY --from=shared scripts/ /usr/local/lib/fabrik/
 COPY --from=parent /var/lib/dpkg/status.d/ /parent-status/
 COPY --from=parent /etc/ssl/certs/ca-certificates.crt /parent-ca/ca-certificates.crt
 COPY cacerts/CaCerts.java /usr/local/src/CaCerts.java
-# OpenJDK 21.0.13.1 (Sicherheitsupdate) liegt seit 20261119T110923Z in trixie-security, aber
-# noch in keinem Builder-Image; DEBIAN_SNAPSHOT nimmt diesen Snapshot (siehe extract-debs.sh).
 # libc-bin (gleiche Version wie libc6 in base) nur für die Locale C.utf8.
-ARG DEBIAN_SNAPSHOT=20261119T110923Z
-RUN DEBIAN_SNAPSHOT=$DEBIAN_SNAPSHOT /usr/local/lib/fabrik/extract-debs.sh /stage \
-		libc-bin=2.41-12+deb13u4 \
+RUN /usr/local/lib/fabrik/extract-debs.sh /stage \
+		libc-bin=2.41-12+deb13u5 \
 		openjdk-21-jre-headless=21.0.13.1+2-1~deb13u1
 
 # Aus dem Paket nur das JRE unter /usr/lib/jvm und seine Konfiguration unter /etc:
@@ -80,7 +77,7 @@ ARG REVISION
 ARG PARENT_NAME
 ARG PARENT_DIGEST
 LABEL org.opencontainers.image.title="java" \
-	org.opencontainers.image.description="base + OpenJDK ${VERSION} (JRE headless) aus Debian 13.7" \
+	org.opencontainers.image.description="base + OpenJDK ${VERSION} (JRE headless) aus Debian 13.8" \
 	org.opencontainers.image.version="${VERSION}" \
 	org.opencontainers.image.revision="${REVISION}" \
 	org.opencontainers.image.licenses="GPL-2.0-only WITH Classpath-exception-2.0 AND GPL-2.0-only WITH OpenJDK-assembly-exception-1.0 AND MIT AND LGPL-2.1-only AND ICU AND Unicode-DFS-2016 AND LGPL-2.1-or-later AND GPL-2.0-or-later AND GPL-3.0-or-later WITH GCC-exception-3.1 AND Apache-2.0 AND BSD-3-Clause AND Zlib AND MPL-2.0 AND LicenseRef-public-domain" \

@@ -4,11 +4,11 @@
 # Für statisch gelinkte Programme (Go mit CGO_ENABLED=0, Rust mit musl).
 
 # Builder läuft auf der Zielplattform; die Paketauswahl ist damit für jede Architektur echt.
-FROM debian:13.7-slim@sha256:62bd423aeee912639ca8ee681c2b762cb3e25137e0a92b20be455898a9f034ad AS builder
+FROM debian:13.8-slim@sha256:8aa5a7bf5a1955bddbe7d74fcdd0b91ab30e74362a8b73af672b0481b35b44a0 AS builder
 ARG SOURCE_DATE_EPOCH
 COPY --from=shared scripts/ /usr/local/lib/fabrik/
 RUN /usr/local/lib/fabrik/extract-debs.sh /stage \
-		base-files=13.8+deb13u7 \
+		base-files=13.8+deb13u8 \
 		ca-certificates=20250419+deb13u1
 
 # CA-Bundle wie update-ca-certificates: alle Mozilla-Zertifikate, sortiert, aneinandergehängt.
@@ -44,7 +44,7 @@ USER 65534:65534
 ARG VERSION
 ARG REVISION
 LABEL org.opencontainers.image.title="static" \
-	org.opencontainers.image.description="scratch + passwd/group + CA-Bundle (Debian 13.7)" \
+	org.opencontainers.image.description="scratch + passwd/group + CA-Bundle (Debian 13.8)" \
 	org.opencontainers.image.source="https://github.com/thetekbrain/container-images" \
 	org.opencontainers.image.version="${VERSION}" \
 	org.opencontainers.image.revision="${REVISION}" \

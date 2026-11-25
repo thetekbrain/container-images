@@ -1,6 +1,6 @@
 # node
 
-`ghcr.io/thetekbrain/images/node:24.22.1` (auch `24.22.1-13.7`) · Debug: `node:24.22.1-debug`
+`ghcr.io/thetekbrain/images/node:24.22.1` (auch `24.22.1-13.8`) · Debug: `node:24.22.1-debug`
 
 Node.js 24 LTS („Krypton“) auf `base`, für Node-Webapps.
 
@@ -21,11 +21,11 @@ Den exakten Inhalt legt [expected-files.txt](expected-files.txt) fest.
 - **Keine Header (`include/`).** Native Addons baut der Build-Stage.
 - **Kein `NODE_ENV`.** Die App setzt es selbst, falls nötig.
 
-Gut zu wissen: `Intl` nutzt die Zeitzonendaten aus Nodes eingebautem ICU (Node 24.22.1: tz 2026e), nicht `/usr/share/zoneinfo` (tzdata 2026c).
+Gut zu wissen: `Intl` nutzt die Zeitzonendaten aus Nodes eingebautem ICU (Node 24.22.1: tz 2026e), nicht `/usr/share/zoneinfo` (tzdata 2026f).
 
 ## Nutzung
 
-Abhängigkeiten im Build-Stage mit derselben Node- und Debian-Version installieren, dann `node_modules` mitkopieren:
+Abhängigkeiten im Build-Stage mit derselben Node- und Debian-Version installieren, dann `node_modules` mitkopieren. Ausnahme: `node:24.22.1-trixie-slim` wird nicht mehr neu gebaut und bleibt auf Debian 13.7; dessen glibc (2.41-12+deb13u4) ist dieselbe Version 2.41 wie im Image (+deb13u5), native Addons passen also.
 
 ```dockerfile
 FROM node:24.22.1-trixie-slim@sha256:<digest> AS build

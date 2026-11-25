@@ -1,8 +1,8 @@
 # java
 
-`ghcr.io/thetekbrain/images/java:21.0.13.1` (auch `21.0.13.1-13.7`) · Debug: `java:21.0.13.1-debug`
+`ghcr.io/thetekbrain/images/java:21.0.13.1` (auch `21.0.13.1-13.8`) · Debug: `java:21.0.13.1-debug`
 
-OpenJDK 21 (JRE headless) aus Debian 13.7 auf `base`, für Java-Webapps und Fat-JARs wie GraphHopper.
+OpenJDK 21 (JRE headless) aus Debian 13.8 auf `base`, für Java-Webapps und Fat-JARs wie GraphHopper.
 
 ## Was es ist
 
@@ -33,12 +33,12 @@ Den exakten Inhalt legt [expected-files.txt](expected-files.txt) fest. Jede nati
 
   Die Klassen sind da, der Aufruf scheitert mit `UnsatisfiedLinkError`. Fonts gibt es im Image keine. Ein headless Server wie GraphHopper braucht nichts davon.
 - **Kein `/tmp`.** `java.io.tmpdir` ist `/tmp`; im read-only Betrieb braucht eine App, die temporäre Dateien anlegt, `--tmpfs /tmp`. Die JVM selbst läuft auch ohne: `hsperfdata` (für `jps`/`jstat`) lässt sie dann still weg.
-- **Zeitzonen:** `java.time` nutzt die Zeitzonendaten des JDK (`lib/tzdb.dat`, Version 2026e), nicht `/usr/share/zoneinfo` aus base (tzdata 2026c). Sie kommen mit jedem OpenJDK-Update. Die Standardzeitzone liest die JVM aus `/etc/localtime` (UTC).
+- **Zeitzonen:** `java.time` nutzt die Zeitzonendaten des JDK (`lib/tzdb.dat`, Version 2026e), nicht `/usr/share/zoneinfo` aus base (tzdata 2026f). Sie kommen mit jedem OpenJDK-Update. Die Standardzeitzone liest die JVM aus `/etc/localtime` (UTC).
 - **Kein `ENTRYPOINT`.** Apps starten mit `CMD ["/usr/bin/java", …, "-jar", "/app/app.jar"]`.
 
 ## Nutzung
 
-Pure-Java-Apps brauchen nur ein JAR; die Debian-Version spielt für den Bytecode keine Rolle. JARs mit nativen Teilen (JNI) baut man auf Debian 13.7, damit sie zur glibc passen. Ein Fat-JAR wie GraphHopper:
+Pure-Java-Apps brauchen nur ein JAR; die Debian-Version spielt für den Bytecode keine Rolle. JARs mit nativen Teilen (JNI) baut man auf Debian 13.8, damit sie zur glibc passen. Ein Fat-JAR wie GraphHopper:
 
 ```dockerfile
 FROM ghcr.io/thetekbrain/images/java:21.0.13.1@sha256:<digest>
@@ -55,7 +55,7 @@ docker run --read-only --cap-drop ALL --security-opt no-new-privileges --tmpfs /
   -v /srv/graph-cache:/app/graph-cache:ro -p 8989:8989 <app-image>
 ```
 
-Ein vollständiges Beispiel mit HTTP-Server, Memory-Mapping, HTTPS beim Start, Healthcheck und sauberem Beenden steht in [examples/java](../../examples/java). Dort entsteht das JAR im Build-Stage mit `openjdk-21-jdk-headless` derselben Version aus Debian 13.7.
+Ein vollständiges Beispiel mit HTTP-Server, Memory-Mapping, HTTPS beim Start, Healthcheck und sauberem Beenden steht in [examples/java](../../examples/java). Dort entsteht das JAR im Build-Stage mit `openjdk-21-jdk-headless` derselben Version aus Debian 13.8.
 
 Gut zu wissen:
 

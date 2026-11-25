@@ -178,7 +178,7 @@
       },
       "affects": [
         {
-          "ref": "pkg:deb/debian/libssl3t64@3.5.7-1~deb13u3"
+          "ref": "pkg:deb/debian/libssl3t64@3.5.9-1~deb13u1"
         }
       ]
     },
@@ -193,7 +193,7 @@
       },
       "affects": [
         {
-          "ref": "pkg:deb/debian/libssl3t64@3.5.7-1~deb13u3"
+          "ref": "pkg:deb/debian/libssl3t64@3.5.9-1~deb13u1"
         }
       ]
     },

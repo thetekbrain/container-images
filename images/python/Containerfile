@@ -2,13 +2,13 @@
 
 # python: base + Python 3.13 (Interpreter und Standardbibliothek aus entpackten Debian-Paketen).
 # Kein pip, keine Shell. Apps bringen ihr venv aus einem Build-Stage mit derselben Debian-Version mit.
-ARG PARENT_IMAGE=ghcr.io/thetekbrain/images/base:13.7
+ARG PARENT_IMAGE=ghcr.io/thetekbrain/images/base:13.8
 
 FROM ${PARENT_IMAGE} AS parent
 
 # Builder auf der Zielplattform. Python ist hier zusätzlich installiert (gleiche Version), um die
 # Standardbibliothek vorzukompilieren.
-FROM debian:13.7-slim@sha256:62bd423aeee912639ca8ee681c2b762cb3e25137e0a92b20be455898a9f034ad AS builder
+FROM debian:13.8-slim@sha256:8aa5a7bf5a1955bddbe7d74fcdd0b91ab30e74362a8b73af672b0481b35b44a0 AS builder
 ARG SOURCE_DATE_EPOCH
 COPY --from=shared scripts/ /usr/local/lib/fabrik/
 COPY --from=parent /var/lib/dpkg/status.d/ /parent-status/
@@ -83,7 +83,7 @@ ARG REVISION
 ARG PARENT_NAME
 ARG PARENT_DIGEST
 LABEL org.opencontainers.image.title="python" \
-	org.opencontainers.image.description="base + Python ${VERSION} aus Debian 13.7" \
+	org.opencontainers.image.description="base + Python ${VERSION} aus Debian 13.8" \
 	org.opencontainers.image.version="${VERSION}" \
 	org.opencontainers.image.revision="${REVISION}" \
 	org.opencontainers.image.licenses="PSF-2.0 AND MIT AND bzip2-1.0.6 AND 0BSD AND BSD-3-Clause AND GPL-3.0-or-later WITH GCC-exception-3.1 AND LGPL-2.1-or-later AND GPL-2.0-or-later AND Apache-2.0 AND Zlib AND MPL-2.0 AND LicenseRef-public-domain" \

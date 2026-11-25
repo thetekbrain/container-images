@@ -1,5 +1,14 @@
 # Changelog node
 
+## 24.22.1 – 2026-11-25 (Debian 13.8)
+
+- Eltern-Image `base:13.8` (Debian-Point-Release 13.8): `libc6` 2.41-12+deb13u5, `libssl3t64` 3.5.9-1~deb13u1, `tzdata` 2026f-0+deb13u1 und `libzstd1` 1.5.7+dfsg-1+deb13u1 (behebt CVE-2026-124851, HIGH, Offenlegung eines internen Puffers beim Dekomprimieren, DSA-6657-1).
+- Builder `debian:13.8-slim@sha256:8aa5a7bf5a1955bddbe7d74fcdd0b91ab30e74362a8b73af672b0481b35b44a0`, Snapshot `20261123T000000Z` (aus dem Builder).
+- Neues Tag `24.22.1-13.8`.
+- [vex.json](vex.json): Die Bewertungen von CVE-2026-107494 und CVE-2026-124709 (QUIC-DoS in libssl) gelten jetzt für `libssl3t64` 3.5.9-1~deb13u1; laut Debian-Tracker ist auch diese Version betroffen, einen Fix gibt es noch nicht.
+- `libstdc++6` `14.2.0-19` unverändert.
+- Beispiel-App: Der Build-Stage `node:24.22.1-trixie-slim` bleibt auf Debian 13.7, weil das Tag nicht mehr neu gebaut wird; glibc dort 2.41-12+deb13u4, im Image 2.41-12+deb13u5 (gleiche Version 2.41). `node:24.22.3-trixie-slim` beruht auf 13.8 und kommt mit dem Wechsel auf Node 24.22.3.
+
 ## 24.22.1 – 2026-11-25 (Sicherheitsupdate über base)
 
 - `zlib1g` aus base jetzt `1:1.3.dfsg+really1.3.1-1+deb13u1` (CVE-2026-85091, HIGH, Heap-Überlauf in `gz_vacate()`).

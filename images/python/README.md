@@ -1,8 +1,8 @@
 # python
 
-`ghcr.io/thetekbrain/images/python:3.13.5` (auch `3.13.5-13.7`) · Debug: `python:3.13.5-debug`
+`ghcr.io/thetekbrain/images/python:3.13.5` (auch `3.13.5-13.8`) · Debug: `python:3.13.5-debug`
 
-Python 3.13 aus Debian 13.7 auf `base`, für Python-Webapps.
+Python 3.13 aus Debian 13.8 auf `base`, für Python-Webapps.
 
 ## Was es ist
 
@@ -33,12 +33,12 @@ Den exakten Inhalt legt [expected-files.txt](expected-files.txt) fest. Jedes nat
 
 ## Nutzung
 
-Das venv im Build-Stage mit *demselben* Python aus Debian 13.7 bauen; dann zeigt es auf `/usr/bin/python3.13`, den Interpreter der Runtime. Mit [uv](https://docs.astral.sh/uv/):
+Das venv im Build-Stage mit *demselben* Python aus Debian 13.8 bauen; dann zeigt es auf `/usr/bin/python3.13`, den Interpreter der Runtime. Mit [uv](https://docs.astral.sh/uv/):
 
 ```dockerfile
 FROM ghcr.io/astral-sh/uv:<version>@sha256:<digest> AS uv
 
-FROM debian:13.7-slim@sha256:<digest> AS build
+FROM debian:13.8-slim@sha256:<digest> AS build
 # Paketquellen auf den Snapshot des Images stellen, damit die gepinnte Version abrufbar bleibt
 RUN sed -i -e 's|^# \(http://snapshot.debian.org/.*\)$|URIs: \1|' -e '/^URIs: http:\/\/deb.debian.org/d' \
       /etc/apt/sources.list.d/debian.sources \

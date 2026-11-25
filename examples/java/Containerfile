@@ -4,13 +4,12 @@
 #   FROM ghcr.io/thetekbrain/images/java:21.0.13.1@sha256:<digest>
 ARG BASE_IMAGE=ghcr.io/thetekbrain/images/java:21.0.13.1
 
-# Build-Stage: JDK derselben Version aus Debian 13.7, aus demselben Snapshot wie das Image
-# (DEBIAN_SNAPSHOT in images/java/Containerfile). Bytecode hängt nicht von der Architektur
-# ab, deshalb wird nur einmal gebaut, auf der Build-Plattform.
-FROM --platform=$BUILDPLATFORM debian:13.7-slim@sha256:62bd423aeee912639ca8ee681c2b762cb3e25137e0a92b20be455898a9f034ad AS build
+# Build-Stage: JDK derselben Version aus Debian 13.8, aus dem Snapshot des Builders wie das
+# Image. Bytecode hängt nicht von der Architektur ab, deshalb wird nur einmal gebaut, auf der
+# Build-Plattform.
+FROM --platform=$BUILDPLATFORM debian:13.8-slim@sha256:8aa5a7bf5a1955bddbe7d74fcdd0b91ab30e74362a8b73af672b0481b35b44a0 AS build
 ARG SOURCE_DATE_EPOCH
-ARG DEBIAN_SNAPSHOT=20261119T110923Z
-RUN sed -i -e "s|^# \(http://snapshot.debian.org/archive/[a-z-]*/\).*$|URIs: \1$DEBIAN_SNAPSHOT|" \
+RUN sed -i -e 's|^# \(http://snapshot.debian.org/.*\)$|URIs: \1|' \
 		-e '/^URIs: http:\/\/deb.debian.org/d' /etc/apt/sources.list.d/debian.sources \
 	&& apt-get -qq -o Acquire::Check-Valid-Until=false update \
 	&& apt-get -qq install -y --no-install-recommends \

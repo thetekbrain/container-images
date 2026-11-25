@@ -9,7 +9,7 @@ fail() { printf 'FEHLER %s\n' "$*"; FAILURES=$((FAILURES + 1)); }
 section() { printf '\n== %s\n' "$*"; }
 meta() { "$ROOT/shared/scripts/image-meta.sh" "$@"; }
 
-# Erstes Tag laut image.yaml, z. B. ghcr.io/thetekbrain/images/static:13.7
+# Erstes Tag laut image.yaml, z. B. ghcr.io/thetekbrain/images/static:13.8
 image_ref() { echo "$REGISTRY/$1:$(meta "$1" tags | head -n1)"; }
 
 # Wartet, bis der HEALTHCHECK eines Containers "healthy" meldet.

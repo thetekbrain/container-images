@@ -4,8 +4,10 @@
 #   FROM ghcr.io/thetekbrain/images/node:24.22.1@sha256:<digest>
 ARG BASE_IMAGE=ghcr.io/thetekbrain/images/node:24.22.1
 
-# Build-Stage: gleiche Node- und Debian-Version (13.7) wie die Runtime, auf der
-# Zielplattform, damit native Addons zur glibc und Architektur passen.
+# Build-Stage: gleiche Node-Version wie die Runtime, auf der Zielplattform, damit native
+# Addons zur glibc und Architektur passen. Ausnahme: node:24.22.1-trixie-slim wird nicht mehr
+# neu gebaut und bleibt auf Debian 13.7 (glibc 2.41-12+deb13u4, Runtime: +deb13u5, gleiche
+# glibc-Version 2.41); mit dem Wechsel auf Node 24.22.3 kommt ein Build-Stage auf 13.8.
 FROM node:24.22.1-trixie-slim@sha256:43b9ba1142b8dcf33fa8f922ca1be85714adc444e0586c7cf7726daaeabc1bea AS build
 ARG SOURCE_DATE_EPOCH
 WORKDIR /app

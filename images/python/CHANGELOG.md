@@ -1,5 +1,13 @@
 # Changelog python
 
+## 3.13.5 – 2026-11-25 (Debian 13.8)
+
+- Eltern-Image `base:13.8` (Debian-Point-Release 13.8): `libc6` 2.41-12+deb13u5, `libssl3t64` 3.5.9-1~deb13u1, `tzdata` 2026f-0+deb13u1 und `libzstd1` 1.5.7+dfsg-1+deb13u1 (behebt CVE-2026-124851, HIGH, Offenlegung eines internen Puffers beim Dekomprimieren, DSA-6657-1).
+- Builder `debian:13.8-slim@sha256:8aa5a7bf5a1955bddbe7d74fcdd0b91ab30e74362a8b73af672b0481b35b44a0`, Snapshot `20261123T000000Z` (aus dem Builder).
+- Neues Tag `3.13.5-13.8`.
+- [vex.json](vex.json): Die Bewertungen von CVE-2026-107494 und CVE-2026-124709 (QUIC-DoS in libssl) gelten jetzt für `libssl3t64` 3.5.9-1~deb13u1; laut Debian-Tracker ist auch diese Version betroffen, einen Fix gibt es noch nicht.
+- Python-Pakete und Bibliotheken unverändert (`3.13.5-2+deb13u5` usw., gleiche Versionen im 13.8-Snapshot). Die Beispiel-App baut ihr venv auf demselben Builder.
+
 ## 3.13.5 – 2026-11-25 (Sicherheitsupdate über base)
 
 - `zlib1g` aus base jetzt `1:1.3.dfsg+really1.3.1-1+deb13u1` (CVE-2026-85091, HIGH, Heap-Überlauf in `gz_vacate()`).

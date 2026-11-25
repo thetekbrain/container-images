@@ -14,11 +14,11 @@ static        scratch + /etc/passwd, /etc/group, CA-Bundle   → Go, Rust (stati
 
 | Image | Tags | Beschreibung |
 |---|---|---|
-| [static](images/static) | `13.7`, `13.7-debug` | scratch + passwd/group + CA-Bundle |
-| [base](images/base) | `13.7`, `13.7-debug` | static + glibc, libssl, tzdata |
-| [node](images/node) | `24.22.1`, `24.22.1-13.7`, jeweils auch `-debug` | base + Node.js 24 LTS |
-| [python](images/python) | `3.13.5`, `3.13.5-13.7`, jeweils auch `-debug` | base + Python 3.13 aus Debian |
-| [java](images/java) | `21.0.13.1`, `21.0.13.1-13.7`, jeweils auch `-debug` | base + OpenJDK 21 (JRE headless) aus Debian |
+| [static](images/static) | `13.8`, `13.8-debug` | scratch + passwd/group + CA-Bundle |
+| [base](images/base) | `13.8`, `13.8-debug` | static + glibc, libssl, tzdata |
+| [node](images/node) | `24.22.1`, `24.22.1-13.8`, jeweils auch `-debug` | base + Node.js 24 LTS |
+| [python](images/python) | `3.13.5`, `3.13.5-13.8`, jeweils auch `-debug` | base + Python 3.13 aus Debian |
+| [java](images/java) | `21.0.13.1`, `21.0.13.1-13.8`, jeweils auch `-debug` | base + OpenJDK 21 (JRE headless) aus Debian |
 
 Alle Images sind öffentlich unter `ghcr.io/thetekbrain/images/<name>`, signiert und mit SBOM, VEX und SLSA-Provenance versehen (siehe [Image verifizieren](#image-verifizieren)).
 
@@ -30,7 +30,7 @@ Registry-Pfad: `ghcr.io/thetekbrain/images/<name>`
 
 | Image | Tags |
 |---|---|
-| `static`, `base` | `<debian-version>`, z. B. `static:13.7` |
+| `static`, `base` | `<debian-version>`, z. B. `static:13.8` |
 | `node`, `python`, `java` | `<laufzeit-version>` und `<laufzeit-version>-<debian-version>` |
 | Debug-Varianten | gleiche Tags mit Suffix `-debug` |
 
@@ -45,11 +45,11 @@ Für eine bestehende Go- oder Node-App mit Containerfile:
    crane digest ghcr.io/thetekbrain/images/node:24.22.1
    ```
    Im Containerfile wird daraus `FROM ghcr.io/thetekbrain/images/node:24.22.1@sha256:<digest>`.
-2. **Build-Stage auf dieselbe Debian-Version bringen** (13.7, trixie), damit native Teile zur glibc passen:
+2. **Build-Stage auf dieselbe Debian-Version bringen** (13.8, trixie), damit native Teile zur glibc passen:
    - Go: `golang:<version>-trixie`
-   - Node: `node:24.22.1-trixie-slim`, darin `npm ci --omit=dev`, dann das ganze App-Verzeichnis samt `node_modules` kopieren
-   - Python: `debian:13.7-slim` mit dem Python-Paket derselben Version wie im Image, darin das venv mit `uv sync` (siehe [images/python](images/python)), dann das ganze venv kopieren
-   - Java: das JAR (bei Fat-JARs wie GraphHopper das fertige Release) nach `/app` kopieren. Selbst gebaut wird mit einem JDK 21; bei nativen Teilen (JNI) auf Debian 13.7, etwa mit `openjdk-21-jdk-headless` derselben Version (siehe [images/java](images/java))
+   - Node: `node:24.22.1-trixie-slim`, darin `npm ci --omit=dev`, dann das ganze App-Verzeichnis samt `node_modules` kopieren. Ausnahme: Dieses Tag wird nicht mehr neu gebaut und bleibt auf Debian 13.7 (glibc 2.41, wie 13.8); mit Node 24.22.3 gibt es wieder einen Build-Stage auf 13.8
+   - Python: `debian:13.8-slim` mit dem Python-Paket derselben Version wie im Image, darin das venv mit `uv sync` (siehe [images/python](images/python)), dann das ganze venv kopieren
+   - Java: das JAR (bei Fat-JARs wie GraphHopper das fertige Release) nach `/app` kopieren. Selbst gebaut wird mit einem JDK 21; bei nativen Teilen (JNI) auf Debian 13.8, etwa mit `openjdk-21-jdk-headless` derselben Version (siehe [images/java](images/java))
 3. **Laufzeit anpassen.** Es gibt keine Shell:
    - `CMD`, `ENTRYPOINT` und `HEALTHCHECK` in der Exec-Form (`["…"]`) schreiben.
    - Bei `node` enthält `CMD` nur das Skript (`["/app/app.js"]`).
@@ -111,10 +111,10 @@ Gleicher Code ergibt das gleiche Image, Bit für Bit. `make repro IMAGE=<name>` 
 Das gilt auch über Rechner hinweg: Mit gleichem Commit und gleichem Eltern-Image ergibt ein Build auf dem Mac denselben Digest wie die CI auf GitHub. Für `static` (ohne Eltern-Image) lässt sich das direkt nachprüfen. Der Commit kommt aus dem Label des veröffentlichten Images, gebaut wird in einem eigenen Worktree ohne Cache:
 
 ```bash
-rev=$(crane config ghcr.io/thetekbrain/images/static:13.7 | jq -r '.config.Labels["org.opencontainers.image.revision"]')
+rev=$(crane config ghcr.io/thetekbrain/images/static:13.8 | jq -r '.config.Labels["org.opencontainers.image.revision"]')
 git worktree add ../fabrik-repro "$rev"
 cd ../fabrik-repro && SOURCE_DATE_EPOCH=$(git log -1 --format=%ct) REVISION="$rev" OUTPUT_DIR="$PWD" shared/scripts/build-image.sh static
-tar -xOf static.tar index.json | jq -r '.manifests[0].digest'; crane digest ghcr.io/thetekbrain/images/static:13.7
+tar -xOf static.tar index.json | jq -r '.manifests[0].digest'; crane digest ghcr.io/thetekbrain/images/static:13.8
 ```
 
 Beide Digests sind gleich. Danach `git worktree remove ../fabrik-repro`.
@@ -229,7 +229,7 @@ Werkzeuge in der CI, gepinnt im Workflow (Actions per Commit-SHA): Runner Ubuntu
     "justification": "code_not_reachable",
     "detail": "Begründung, warum die Lücke hier nicht ausnutzbar ist"
   },
-  "affects": [{ "ref": "pkg:deb/debian/libc6@2.41-12+deb13u4" }]
+  "affects": [{ "ref": "pkg:deb/debian/libc6@2.41-12+deb13u5" }]
 }
 ```
 
@@ -304,7 +304,7 @@ Stand: 2026-10-26
 | Produktiv-VPS | Hetzner, x86 (`linux/amd64`) |
 | Gebaute Plattformen | `linux/amd64` und `linux/arm64` |
 | Laufzeiten | Node 24 LTS; Python 3.13 aus Debian (seit 2026-10-26, für soinow-net); Java 21 (OpenJDK, JRE headless) aus Debian (seit 2026-10-30, für Sangkhaya/GraphHopper) |
-| Debian-Version | 13.7 (trixie), aktuelles stable |
+| Debian-Version | 13.8 (trixie), aktuelles stable |
 | Debian-Pakete | aus `snapshot.debian.org`, Zeitpunkt aus dem gepinnten Builder-Image |
 
 ### Lokale Werkzeuge
@@ -341,7 +341,7 @@ docker buildx ls
 cosign version; syft version; trivy --version; crane version
 ```
 
-amd64 läuft auf dem Mac emuliert. Nachweis, dass beide Architekturen laufen und Debian stable 13.7 ist:
+amd64 läuft auf dem Mac emuliert. Nachweis, dass beide Architekturen laufen und Debian stable 13.8 ist:
 
 ```bash
 for p in linux/arm64 linux/amd64; do docker run --rm --platform $p debian:stable-slim sh -c 'echo "$(uname -m) $(cat /etc/debian_version)"'; done

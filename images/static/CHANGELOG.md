@@ -1,5 +1,14 @@
 # Changelog static
 
+## 13.8 – 2026-11-25 (Debian-Point-Release)
+
+| Baustein | Wert | ermittelt mit |
+|---|---|---|
+| Builder | `debian:13.8-slim@sha256:8aa5a7bf5a1955bddbe7d74fcdd0b91ab30e74362a8b73af672b0481b35b44a0` | Registry-Digest von `debian:13.8-slim` |
+| Debian-Snapshot | `20261123T000000Z` | Kommentar in `/etc/apt/sources.list.d/debian.sources` des Builders |
+| `base-files` | `13.8+deb13u8` | `apt-cache policy` gegen den Snapshot (amd64 und arm64) |
+| `ca-certificates` | `20250419+deb13u1` | dto., unverändert |
+
 ## 13.7 – 2026-10-26 (Nachtrag)
 
 - Label `org.opencontainers.image.licenses` nennt zusätzlich `Apache-2.0` für die eigenen Dateien (`/etc/passwd`, `/etc/group`). Inhalt unverändert.
