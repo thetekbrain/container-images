@@ -42,18 +42,23 @@ if [ "$(jq -r '.tz' <<<"$health")" = Europe/Berlin ] && jq -re '.local_time | te
 else
 	fail "Zeitzone: $health"
 fi
-curl -fsS "http://127.0.0.1:$port/" | grep -q 'Image-Fabrik' && ok "GET / liefert die Startseite" || fail "GET / ohne erwarteten Inhalt"
+# Ausgaben erst vollständig lesen, dann durchsuchen: Mit pipefail ließe "… | grep -q" die
+# Pipeline scheitern, sobald grep beim ersten Treffer endet und der Schreiber SIGPIPE bekommt.
+page=$(curl -fsS "http://127.0.0.1:$port/")
+grep -q 'Image-Fabrik' <<<"$page" && ok "GET / liefert die Startseite" || fail "GET / ohne erwarteten Inhalt"
 
-docker logs "$name" 2>&1 | grep -q 'startup https ok' && ok "HTTPS beim Start mit CA-Bundle des Images" || fail "kein 'startup https ok' im Log"
+logs=$(docker logs "$name" 2>&1)
+grep -q 'startup https ok' <<<"$logs" && ok "HTTPS beim Start mit CA-Bundle des Images" || fail "kein 'startup https ok' im Log"
 
 start=$(date +%s)
 docker stop -t 15 "$name" >/dev/null
 elapsed=$(($(date +%s) - start))
 code=$(docker inspect -f '{{.State.ExitCode}}' "$name")
 [ "$code" = 0 ] && ok "SIGTERM -> Exit 0 nach ${elapsed}s" || fail "SIGTERM -> Exit $code nach ${elapsed}s"
-if docker logs "$name" 2>&1 | grep -Eiq "$ERROR_PATTERN"; then
+logs=$(docker logs "$name" 2>&1)
+if grep -Eiq "$ERROR_PATTERN" <<<"$logs"; then
 	fail "Fehler im Log:"
-	docker logs "$name" 2>&1 | grep -Ei "$ERROR_PATTERN" | sed 's/^/       | /'
+	grep -Ei "$ERROR_PATTERN" <<<"$logs" | sed 's/^/       | /'
 else
 	ok "keine Fehler im Log"
 fi
@@ -65,11 +70,12 @@ if ! wait_exited "$name-neg" 30; then
 	fail "Negativkontrolle: App läuft ohne CA-Bundle weiter"
 else
 	code=$(docker inspect -f '{{.State.ExitCode}}' "$name-neg")
-	if [ "$code" != 0 ] && docker logs "$name-neg" 2>&1 | grep -Eiq 'certificate|x509'; then
+	logs=$(docker logs "$name-neg" 2>&1)
+	if [ "$code" != 0 ] && grep -Eiq 'certificate|x509' <<<"$logs"; then
 		ok "Negativkontrolle: ohne CA-Bundle Exit $code mit Zertifikatsfehler"
 	else
 		fail "Negativkontrolle: Exit $code, Log:"
-		docker logs "$name-neg" 2>&1 | sed 's/^/       | /'
+		sed 's/^/       | /' <<<"$logs"
 	fi
 fi
 
