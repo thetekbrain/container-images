@@ -5,7 +5,7 @@
 ARG BASE_IMAGE=ghcr.io/thetekbrain/images/static:13.8
 
 # Go cross-kompiliert, daher läuft der Build-Stage nativ auf der Build-Plattform.
-FROM --platform=$BUILDPLATFORM golang:1.27.3-trixie@sha256:fbb7ae40b62ff8afe31662df570d39b4f5052ac32b90dae8e60d7657a20a74f4 AS build
+FROM --platform=$BUILDPLATFORM golang:1.27.4-trixie@sha256:c393c00864b56f4404b3fe4d029e47742fbb53ee11506521d2f3377009ad7a3a AS build
 ARG TARGETOS
 ARG TARGETARCH
 ARG SOURCE_DATE_EPOCH
