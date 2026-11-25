@@ -157,7 +157,7 @@ Außer `uv` ist keines dieser Images signiert. Für `uv` prüft die Regel `githu
 
 ## Wartung
 
-**Täglich** (05:17 UTC) läuft [.github/workflows/maintenance.yml](.github/workflows/maintenance.yml) mit [ci/check-updates.sh](ci/check-updates.sh). Jeder Befund wird ein Issue mit Label `wartung`; ist schon eins mit gleichem Titel offen, entsteht kein zweites.
+**Täglich** (05:17 UTC) läuft [.github/workflows/maintenance.yml](.github/workflows/maintenance.yml) mit [ci/check-updates.sh](ci/check-updates.sh). Jeder Befund wird ein Issue mit Label `wartung`; ist schon eins mit gleichem Titel offen, entsteht kein zweites. Wer einen Hinweis bewusst ablehnt, schließt das Issue als „not planned“ (`gh issue close <nr> -r "not planned"`); dann entsteht es für denselben Titel nicht neu. Beispiel: [#11](https://github.com/thetekbrain/container-images/issues/11), die Fabrik bleibt bei Node 24. Das Ende der genutzten Linie meldet der Check trotzdem, unter eigenem Titel.
 
 | Prüfung | Quelle |
 |---|---|
