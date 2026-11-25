@@ -1,7 +1,7 @@
 # Gemeinsame Hilfsfunktionen der Tests (wird per "." eingebunden).
 
 ROOT=$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)
-REGISTRY=${REGISTRY:-ghcr.io/altner/images}
+REGISTRY=${REGISTRY:-ghcr.io/thetekbrain/images}
 FAILURES=0
 
 ok() { printf 'ok     %s\n' "$*"; }
@@ -9,7 +9,7 @@ fail() { printf 'FEHLER %s\n' "$*"; FAILURES=$((FAILURES + 1)); }
 section() { printf '\n== %s\n' "$*"; }
 meta() { "$ROOT/shared/scripts/image-meta.sh" "$@"; }
 
-# Erstes Tag laut image.yaml, z. B. ghcr.io/altner/images/static:13.7
+# Erstes Tag laut image.yaml, z. B. ghcr.io/thetekbrain/images/static:13.7
 image_ref() { echo "$REGISTRY/$1:$(meta "$1" tags | head -n1)"; }
 
 # Wartet, bis der HEALTHCHECK eines Containers "healthy" meldet.

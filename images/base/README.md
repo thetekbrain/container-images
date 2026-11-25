@@ -1,6 +1,6 @@
 # base
 
-`ghcr.io/altner/images/base:13.7` · Debug: `base:13.7-debug`
+`ghcr.io/thetekbrain/images/base:13.7` · Debug: `base:13.7-debug`
 
 `static` plus C-Laufzeit für dynamisch gelinkte Programme, auf Basis von Debian 13.7.
 
@@ -39,7 +39,7 @@ Den exakten Inhalt legt [expected-files.txt](expected-files.txt) fest. Der Test 
 ```dockerfile
 FROM rust:<version>-trixie@sha256:<digest> AS build
 # …
-FROM ghcr.io/altner/images/base:13.7@sha256:<digest>
+FROM ghcr.io/thetekbrain/images/base:13.7@sha256:<digest>
 COPY --from=build /out/app /app
 ENTRYPOINT ["/app"]
 ```
@@ -47,7 +47,7 @@ ENTRYPOINT ["/app"]
 Prüfen, ob ein Programm hier alle Bibliotheken findet. Am Beispiel `libssl`:
 
 ```bash
-docker run --rm --entrypoint /lib/ld-linux-aarch64.so.1 ghcr.io/altner/images/base:13.7 --list /usr/lib/aarch64-linux-gnu/libssl.so.3
+docker run --rm --entrypoint /lib/ld-linux-aarch64.so.1 ghcr.io/thetekbrain/images/base:13.7 --list /usr/lib/aarch64-linux-gnu/libssl.so.3
 ```
 
 Auf amd64 heißt der Loader `/lib64/ld-linux-x86-64.so.2`, und die Bibliotheken liegen unter `/usr/lib/x86_64-linux-gnu`.
@@ -55,5 +55,5 @@ Auf amd64 heißt der Loader `/lib64/ld-linux-x86-64.so.2`, und die Bibliotheken 
 Fehlersuche mit Shell (nie im Betrieb):
 
 ```bash
-docker run --rm -it ghcr.io/altner/images/base:13.7-debug sh
+docker run --rm -it ghcr.io/thetekbrain/images/base:13.7-debug sh
 ```

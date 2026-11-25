@@ -1,6 +1,6 @@
 # python
 
-`ghcr.io/altner/images/python:3.13.5` (auch `3.13.5-13.7`) · Debug: `python:3.13.5-debug`
+`ghcr.io/thetekbrain/images/python:3.13.5` (auch `3.13.5-13.7`) · Debug: `python:3.13.5-debug`
 
 Python 3.13 aus Debian 13.7 auf `base`, für Python-Webapps.
 
@@ -52,7 +52,7 @@ COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen --no-dev --python /usr/bin/python3.13
 COPY . .
 
-FROM ghcr.io/altner/images/python:3.13.5@sha256:<digest>
+FROM ghcr.io/thetekbrain/images/python:3.13.5@sha256:<digest>
 COPY --from=build /opt/venv /opt/venv
 COPY --from=build /app /app
 WORKDIR /app
@@ -76,5 +76,5 @@ docker run --read-only --cap-drop ALL --security-opt no-new-privileges -p 8080:8
 Fehlersuche mit Shell (nie im Betrieb):
 
 ```bash
-docker run --rm -it --entrypoint sh ghcr.io/altner/images/python:3.13.5-debug
+docker run --rm -it --entrypoint sh ghcr.io/thetekbrain/images/python:3.13.5-debug
 ```

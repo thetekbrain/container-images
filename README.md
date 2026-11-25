@@ -20,13 +20,13 @@ static        scratch + /etc/passwd, /etc/group, CA-Bundle   → Go, Rust (stati
 | [python](images/python) | `3.13.5`, `3.13.5-13.7`, jeweils auch `-debug` | base + Python 3.13 aus Debian |
 | [java](images/java) | `21.0.13`, `21.0.13-13.7`, jeweils auch `-debug` | base + OpenJDK 21 (JRE headless) aus Debian |
 
-Alle Images sind öffentlich unter `ghcr.io/altner/images/<name>`, signiert und mit SBOM, VEX und SLSA-Provenance versehen (siehe [Image verifizieren](#image-verifizieren)).
+Alle Images sind öffentlich unter `ghcr.io/thetekbrain/images/<name>`, signiert und mit SBOM, VEX und SLSA-Provenance versehen (siehe [Image verifizieren](#image-verifizieren)).
 
 Die `-debug`-Varianten enthalten zusätzlich ein statisch gelinktes busybox unter `/busybox` (im `PATH`). Sie laufen ebenfalls als `65534:65534` und sind nur für die lokale Fehlersuche gedacht, nie für den Betrieb.
 
 ## Tag-Schema
 
-Registry-Pfad: `ghcr.io/altner/images/<name>`
+Registry-Pfad: `ghcr.io/thetekbrain/images/<name>`
 
 | Image | Tags |
 |---|---|
@@ -42,9 +42,9 @@ Für eine bestehende Go- oder Node-App mit Containerfile:
 
 1. **Image wählen und per Digest pinnen.** Go mit `CGO_ENABLED=0` nimmt `static`, Node-Apps nehmen `node`, Python-Apps `python`, Java-Apps `java`:
    ```bash
-   crane digest ghcr.io/altner/images/node:24.22.1
+   crane digest ghcr.io/thetekbrain/images/node:24.22.1
    ```
-   Im Containerfile wird daraus `FROM ghcr.io/altner/images/node:24.22.1@sha256:<digest>`.
+   Im Containerfile wird daraus `FROM ghcr.io/thetekbrain/images/node:24.22.1@sha256:<digest>`.
 2. **Build-Stage auf dieselbe Debian-Version bringen** (13.7, trixie), damit native Teile zur glibc passen:
    - Go: `golang:<version>-trixie`
    - Node: `node:24.22.1-trixie-slim`, darin `npm ci --omit=dev`, dann das ganze App-Verzeichnis samt `node_modules` kopieren
@@ -61,7 +61,7 @@ Für eine bestehende Go- oder Node-App mit Containerfile:
    ```bash
    docker run --read-only --cap-drop ALL --security-opt no-new-privileges -p 8080:8080 <app-image>
    ```
-7. **Optional Herkunft prüfen:** Ein Schritt `cosign verify` (siehe [Image verifizieren](#image-verifizieren)) vor dem Deploy. Oder `security/verify-base-image.sh` mit `base-image-trust.json` übernehmen; der Eintrag `ghcr.io/altner/images/*` ist schon da.
+7. **Optional Herkunft prüfen:** Ein Schritt `cosign verify` (siehe [Image verifizieren](#image-verifizieren)) vor dem Deploy. Oder `security/verify-base-image.sh` mit `base-image-trust.json` übernehmen; der Eintrag `ghcr.io/thetekbrain/images/*` ist schon da.
 
 Vollständige Vorlagen sind [examples/go](examples/go), [examples/node](examples/node), [examples/python](examples/python) und [examples/java](examples/java). Zur Fehlersuche das `-debug`-Tag nehmen und mit `--entrypoint sh` starten.
 
@@ -111,10 +111,10 @@ Gleicher Code ergibt das gleiche Image, Bit für Bit. `make repro IMAGE=<name>` 
 Das gilt auch über Rechner hinweg: Mit gleichem Commit und gleichem Eltern-Image ergibt ein Build auf dem Mac denselben Digest wie die CI auf GitHub. Für `static` (ohne Eltern-Image) lässt sich das direkt nachprüfen. Der Commit kommt aus dem Label des veröffentlichten Images, gebaut wird in einem eigenen Worktree ohne Cache:
 
 ```bash
-rev=$(crane config ghcr.io/altner/images/static:13.7 | jq -r '.config.Labels["org.opencontainers.image.revision"]')
+rev=$(crane config ghcr.io/thetekbrain/images/static:13.7 | jq -r '.config.Labels["org.opencontainers.image.revision"]')
 git worktree add ../fabrik-repro "$rev"
 cd ../fabrik-repro && SOURCE_DATE_EPOCH=$(git log -1 --format=%ct) REVISION="$rev" OUTPUT_DIR="$PWD" shared/scripts/build-image.sh static
-tar -xOf static.tar index.json | jq -r '.manifests[0].digest'; crane digest ghcr.io/altner/images/static:13.7
+tar -xOf static.tar index.json | jq -r '.manifests[0].digest'; crane digest ghcr.io/thetekbrain/images/static:13.7
 ```
 
 Beide Digests sind gleich. Danach `git worktree remove ../fabrik-repro`.
@@ -248,29 +248,29 @@ brew install cosign crane
 Die Signatur stammt aus dem Workflow `images.yml` auf `main` dieses Repositorys:
 
 ```bash
-cosign verify ghcr.io/altner/images/node:24.22.1 \
-  --certificate-identity 'https://github.com/altner/container-images/.github/workflows/images.yml@refs/heads/main' \
+cosign verify ghcr.io/thetekbrain/images/node:24.22.1 \
+  --certificate-identity 'https://github.com/thetekbrain/container-images/.github/workflows/images.yml@refs/heads/main' \
   --certificate-oidc-issuer https://token.actions.githubusercontent.com
 ```
 
 SBOM und VEX hängen am Image der jeweiligen Plattform. Digest ermitteln, dann die SBOM verifizieren und die Paketliste ausgeben:
 
 ```bash
-digest=$(crane digest --platform linux/amd64 ghcr.io/altner/images/node:24.22.1)
+digest=$(crane digest --platform linux/amd64 ghcr.io/thetekbrain/images/node:24.22.1)
 ```
 
 ```bash
 cosign verify-attestation --type cyclonedx \
-  --certificate-identity 'https://github.com/altner/container-images/.github/workflows/images.yml@refs/heads/main' \
+  --certificate-identity 'https://github.com/thetekbrain/container-images/.github/workflows/images.yml@refs/heads/main' \
   --certificate-oidc-issuer https://token.actions.githubusercontent.com \
-  "ghcr.io/altner/images/node@$digest" | jq -r '.payload' | base64 -d | jq -r '.predicate.components[] | select(.purl) | "\(.name) \(.version)"'
+  "ghcr.io/thetekbrain/images/node@$digest" | jq -r '.payload' | base64 -d | jq -r '.predicate.components[] | select(.purl) | "\(.name) \(.version)"'
 ```
 
 ```bash
 cosign verify-attestation --type https://cyclonedx.org/vex \
-  --certificate-identity 'https://github.com/altner/container-images/.github/workflows/images.yml@refs/heads/main' \
+  --certificate-identity 'https://github.com/thetekbrain/container-images/.github/workflows/images.yml@refs/heads/main' \
   --certificate-oidc-issuer https://token.actions.githubusercontent.com \
-  "ghcr.io/altner/images/node@$digest" | jq -r '.payload' | base64 -d | jq '.predicate.vulnerabilities'
+  "ghcr.io/thetekbrain/images/node@$digest" | jq -r '.payload' | base64 -d | jq '.predicate.vulnerabilities'
 ```
 
 Die SLSA-Provenance signiert der slsa-github-generator mit seiner eigenen Identität. Die Bindung an dieses Repository prüft `--certificate-github-workflow-repository`. Der Generator legt die Attestierung im älteren cosign-Format ab, deshalb braucht cosign 3 `--new-bundle-format=false`:
@@ -279,8 +279,8 @@ Die SLSA-Provenance signiert der slsa-github-generator mit seiner eigenen Identi
 cosign verify-attestation --new-bundle-format=false --type slsaprovenance \
   --certificate-identity-regexp '^https://github.com/slsa-framework/slsa-github-generator/.github/workflows/generator_container_slsa3.yml@refs/tags/v[0-9]+\.[0-9]+\.[0-9]+$' \
   --certificate-oidc-issuer https://token.actions.githubusercontent.com \
-  --certificate-github-workflow-repository altner/container-images \
-  ghcr.io/altner/images/node:24.22.1 | jq -r '.payload' | base64 -d | jq '{subject, source: .predicate.invocation.configSource}'
+  --certificate-github-workflow-repository thetekbrain/container-images \
+  ghcr.io/thetekbrain/images/node:24.22.1 | jq -r '.payload' | base64 -d | jq '{subject, source: .predicate.invocation.configSource}'
 ```
 
 Die Ausgabe nennt den Image-Digest, das Repository und den Commit, aus dem das Image gebaut wurde.
@@ -288,7 +288,7 @@ Die Ausgabe nennt den Image-Digest, das Repository und den Commit, aus dem das I
 Alle Befehle funktionieren ohne Anmeldung bei ghcr.io; die Images sind öffentlich. In App-Repos das Image per Digest pinnen:
 
 ```bash
-crane digest ghcr.io/altner/images/node:24.22.1
+crane digest ghcr.io/thetekbrain/images/node:24.22.1
 ```
 
 ## Entscheidungen und Umgebung
@@ -298,9 +298,9 @@ Stand: 2026-10-26
 | Thema | Festlegung |
 |---|---|
 | Plattform | GitHub (Repository, GitHub Actions, Registry `ghcr.io`) |
-| Repository | `github.com/altner/container-images`, öffentlich |
+| Repository | `github.com/thetekbrain/container-images`, öffentlich |
 | Signatur | cosign keyless über GitHub-OIDC |
-| Registry-Pfad | `ghcr.io/altner/images/<name>`, öffentlich |
+| Registry-Pfad | `ghcr.io/thetekbrain/images/<name>`, öffentlich |
 | Produktiv-VPS | Hetzner, x86 (`linux/amd64`) |
 | Gebaute Plattformen | `linux/amd64` und `linux/arm64` |
 | Laufzeiten | Node 24 LTS; Python 3.13 aus Debian (seit 2026-10-26, für soinow-net); Java 21 (OpenJDK, JRE headless) aus Debian (seit 2026-10-30, für Sangkhaya/GraphHopper) |
@@ -354,5 +354,5 @@ Die eigenen Dateien dieses Repositorys stehen unter der [Apache License 2.0](LIC
 Die Images enthalten zusätzlich Software unter eigenen Lizenzen, etwa glibc, OpenSSL, die CA-Zertifikate, tzdata, Node.js und busybox. Deren Lizenztexte liegen im Image unter `/usr/share/doc/<paket>/copyright` bzw. `/usr/local/share/doc/node/LICENSE`. Das Label `org.opencontainers.image.licenses` jedes Images fasst alle enthaltenen Lizenzen als SPDX-Ausdruck zusammen:
 
 ```bash
-crane config ghcr.io/altner/images/node:24.22.1 | jq -r '.config.Labels["org.opencontainers.image.licenses"]'
+crane config ghcr.io/thetekbrain/images/node:24.22.1 | jq -r '.config.Labels["org.opencontainers.image.licenses"]'
 ```

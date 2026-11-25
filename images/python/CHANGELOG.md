@@ -6,7 +6,7 @@ Erste Version, mit `-debug`-Variante.
 
 | Baustein | Wert | ermittelt mit |
 |---|---|---|
-| Eltern-Image | `ghcr.io/altner/images/base:13.7` | Stammbaum |
+| Eltern-Image | `ghcr.io/thetekbrain/images/base:13.7` | Stammbaum |
 | Builder | `debian:13.7-slim@sha256:62bd423aeee912639ca8ee681c2b762cb3e25137e0a92b20be455898a9f034ad` | wie static |
 | Debian-Snapshot | `20261020T213255Z` | aus dem Builder |
 | `python3.13-minimal`, `libpython3.13-minimal`, `libpython3.13-stdlib` | `3.13.5-2+deb13u5` | `apt-cache policy` gegen den Snapshot |

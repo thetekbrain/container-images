@@ -1,6 +1,6 @@
 # node
 
-`ghcr.io/altner/images/node:24.22.1` (auch `24.22.1-13.7`) · Debug: `node:24.22.1-debug`
+`ghcr.io/thetekbrain/images/node:24.22.1` (auch `24.22.1-13.7`) · Debug: `node:24.22.1-debug`
 
 Node.js 24 LTS („Krypton“) auf `base`, für Node-Webapps.
 
@@ -34,7 +34,7 @@ COPY package.json package-lock.json ./
 RUN npm ci --omit=dev
 COPY . .
 
-FROM ghcr.io/altner/images/node:24.22.1@sha256:<digest>
+FROM ghcr.io/thetekbrain/images/node:24.22.1@sha256:<digest>
 WORKDIR /app
 COPY --from=build /app /app
 CMD ["/app/app.js"]
@@ -53,5 +53,5 @@ docker run --read-only --cap-drop ALL --security-opt no-new-privileges -p 8080:8
 Fehlersuche mit Shell (nie im Betrieb):
 
 ```bash
-docker run --rm -it --entrypoint sh ghcr.io/altner/images/node:24.22.1-debug
+docker run --rm -it --entrypoint sh ghcr.io/thetekbrain/images/node:24.22.1-debug
 ```

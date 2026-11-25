@@ -1,6 +1,6 @@
 # java
 
-`ghcr.io/altner/images/java:21.0.13` (auch `21.0.13-13.7`) · Debug: `java:21.0.13-debug`
+`ghcr.io/thetekbrain/images/java:21.0.13` (auch `21.0.13-13.7`) · Debug: `java:21.0.13-debug`
 
 OpenJDK 21 (JRE headless) aus Debian 13.7 auf `base`, für Java-Webapps und Fat-JARs wie GraphHopper.
 
@@ -41,7 +41,7 @@ Den exakten Inhalt legt [expected-files.txt](expected-files.txt) fest. Jede nati
 Pure-Java-Apps brauchen nur ein JAR; die Debian-Version spielt für den Bytecode keine Rolle. JARs mit nativen Teilen (JNI) baut man auf Debian 13.7, damit sie zur glibc passen. Ein Fat-JAR wie GraphHopper:
 
 ```dockerfile
-FROM ghcr.io/altner/images/java:21.0.13@sha256:<digest>
+FROM ghcr.io/thetekbrain/images/java:21.0.13@sha256:<digest>
 COPY graphhopper-web-11.1.jar config.yml /app/
 WORKDIR /app
 EXPOSE 8989
@@ -74,5 +74,5 @@ docker run --read-only --cap-drop ALL --security-opt no-new-privileges --tmpfs /
 Fehlersuche mit Shell (nie im Betrieb):
 
 ```bash
-docker run --rm -it --entrypoint sh ghcr.io/altner/images/java:21.0.13-debug
+docker run --rm -it --entrypoint sh ghcr.io/thetekbrain/images/java:21.0.13-debug
 ```

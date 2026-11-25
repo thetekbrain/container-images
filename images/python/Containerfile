@@ -2,7 +2,7 @@
 
 # python: base + Python 3.13 (Interpreter und Standardbibliothek aus entpackten Debian-Paketen).
 # Kein pip, keine Shell. Apps bringen ihr venv aus einem Build-Stage mit derselben Debian-Version mit.
-ARG PARENT_IMAGE=ghcr.io/altner/images/base:13.7
+ARG PARENT_IMAGE=ghcr.io/thetekbrain/images/base:13.7
 
 FROM ${PARENT_IMAGE} AS parent
 

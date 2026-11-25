@@ -1,3 +1,3 @@
-module github.com/altner/container-images/examples/go
+module github.com/thetekbrain/container-images/examples/go
 
 go 1.27

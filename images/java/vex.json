@@ -6,7 +6,7 @@
   "metadata": {
     "component": {
       "type": "container",
-      "name": "ghcr.io/altner/images/java"
+      "name": "ghcr.io/thetekbrain/images/java"
     }
   },
   "vulnerabilities": [

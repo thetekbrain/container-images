@@ -6,7 +6,7 @@ Erste Version, mit `-debug`-Variante. Erster Nutzer: GraphHopper 11.1 für Sangk
 
 | Baustein | Wert | ermittelt mit |
 |---|---|---|
-| Eltern-Image | `ghcr.io/altner/images/base:13.7` | Stammbaum |
+| Eltern-Image | `ghcr.io/thetekbrain/images/base:13.7` | Stammbaum |
 | Builder | `debian:13.7-slim@sha256:62bd423aeee912639ca8ee681c2b762cb3e25137e0a92b20be455898a9f034ad` | wie static |
 | Debian-Snapshot | `20261027T195512Z` (`DEBIAN_SNAPSHOT`), statt `20261020T213255Z` aus dem Builder | `snapshot.debian.org/mr/binary/openjdk-21-jre-headless/21.0.13+9-1~deb13u2/binfiles?fileinfo=1`: `first_seen` in `debian-security` |
 | `openjdk-21-jre-headless` | `21.0.13+9-1~deb13u2` (trixie-security) | Paketliste von `trixie-security`; stable hat `21.0.12.1+1-1~deb13u1` |

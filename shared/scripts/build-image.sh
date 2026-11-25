@@ -13,7 +13,7 @@ root=$(cd "$(dirname "$0")/../.." && pwd)
 name=$1
 meta() { "$root/shared/scripts/image-meta.sh" "$@"; }
 
-REGISTRY=${REGISTRY:-ghcr.io/altner/images}
+REGISTRY=${REGISTRY:-ghcr.io/thetekbrain/images}
 PLATFORMS=${PLATFORMS:-$(meta "$name" platforms)}
 SOURCE_DATE_EPOCH=${SOURCE_DATE_EPOCH:-$(git -C "$root" log -1 --format=%ct)}
 if [ -z "${REVISION:-}" ]; then

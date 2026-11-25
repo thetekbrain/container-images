@@ -21,7 +21,7 @@
         "docker"
       ],
       "matchPackageNames": [
-        "ghcr.io/altner/images/**"
+        "ghcr.io/thetekbrain/images/**"
       ],
       "enabled": false
     },

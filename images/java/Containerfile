@@ -2,7 +2,7 @@
 
 # java: base + OpenJDK 21 (JRE headless) aus dem entpackten Debian-Paket. Nur das Programm
 # java, keine Shell. Den Truststore cacerts erzeugt der Build aus dem CA-Bundle des Images.
-ARG PARENT_IMAGE=ghcr.io/altner/images/base:13.7
+ARG PARENT_IMAGE=ghcr.io/thetekbrain/images/base:13.7
 
 FROM ${PARENT_IMAGE} AS parent
 

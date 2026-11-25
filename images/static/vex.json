@@ -6,7 +6,7 @@
   "metadata": {
     "component": {
       "type": "container",
-      "name": "ghcr.io/altner/images/static"
+      "name": "ghcr.io/thetekbrain/images/static"
     }
   },
   "vulnerabilities": []

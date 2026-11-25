@@ -1,6 +1,6 @@
 # static
 
-`ghcr.io/altner/images/static:13.7` · Debug: `static:13.7-debug`
+`ghcr.io/thetekbrain/images/static:13.7` · Debug: `static:13.7-debug`
 
 Leeres Image (`scratch`) mit dem Nötigsten für statisch gelinkte Programme, auf Basis von Debian 13.7.
 
@@ -17,7 +17,7 @@ Leeres Image (`scratch`) mit dem Nötigsten für statisch gelinkte Programme, au
 Prüfen, dass das CA-Bundle mit dem von Debian übereinstimmt (gleiche Prüfsumme in beiden Zeilen):
 
 ```bash
-cid=$(docker create ghcr.io/altner/images/static:13.7 none); docker cp $cid:/etc/ssl/certs/ca-certificates.crt - | tar -xOf - | shasum -a 256; docker rm $cid >/dev/null
+cid=$(docker create ghcr.io/thetekbrain/images/static:13.7 none); docker cp $cid:/etc/ssl/certs/ca-certificates.crt - | tar -xOf - | shasum -a 256; docker rm $cid >/dev/null
 ```
 
 ```bash
@@ -43,7 +43,7 @@ COPY . .
 RUN CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH \
     go build -trimpath -ldflags="-s -w -buildid=" -o /out/app .
 
-FROM ghcr.io/altner/images/static:13.7@sha256:<digest>
+FROM ghcr.io/thetekbrain/images/static:13.7@sha256:<digest>
 COPY --from=build /out/app /app
 ENTRYPOINT ["/app"]
 ```
@@ -59,5 +59,5 @@ docker run --read-only --cap-drop ALL --security-opt no-new-privileges -p 8080:8
 Fehlersuche mit Shell (nie im Betrieb):
 
 ```bash
-docker run --rm -it ghcr.io/altner/images/static:13.7-debug sh
+docker run --rm -it ghcr.io/thetekbrain/images/static:13.7-debug sh
 ```

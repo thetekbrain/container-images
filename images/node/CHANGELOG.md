@@ -11,7 +11,7 @@ Erste Version, mit `-debug`-Variante.
 
 | Baustein | Wert | ermittelt mit |
 |---|---|---|
-| Eltern-Image | `ghcr.io/altner/images/base:13.7` | Stammbaum |
+| Eltern-Image | `ghcr.io/thetekbrain/images/base:13.7` | Stammbaum |
 | Node.js | `v24.22.1` (LTS Krypton, Maintenance seit 2026-10-20) | `https://nodejs.org/dist/index.json`, neueste Version mit `lts != false` |
 | `node-v24.22.1-linux-x64.tar.gz` | `sha256:eb6728e77c576a35162c122c45ccadf224d89ff00abc8dae46cc2897c6002d7c` | `SHASUMS256.txt` von nodejs.org |
 | `node-v24.22.1-linux-arm64.tar.gz` | `sha256:33c37be234ba8bee041961047b19160f4d7d0f164e8e246f78bdd10feff148b3` | dto. |

@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1.28.0@sha256:bb22d9815c728170f72750f4e5b0d672e06176142e1d602c7e66c050100b7e5b
 
 # base: static + glibc, libssl, tzdata. Für dynamisch gelinkte Programme.
-ARG PARENT_IMAGE=ghcr.io/altner/images/static:13.7
+ARG PARENT_IMAGE=ghcr.io/thetekbrain/images/static:13.7
 
 FROM debian:13.7-slim@sha256:62bd423aeee912639ca8ee681c2b762cb3e25137e0a92b20be455898a9f034ad AS builder
 ARG SOURCE_DATE_EPOCH
