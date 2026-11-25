@@ -1,5 +1,23 @@
 # Changelog node
 
+## 24.22.3 – 2026-11-25
+
+Node.js 24.22.3, Sicherheitsrelease (enthält auch 24.22.2).
+
+| Baustein | Wert | ermittelt mit |
+|---|---|---|
+| Eltern-Image | `ghcr.io/thetekbrain/images/base:13.8` | Stammbaum |
+| Node.js | `v24.22.3` (LTS Krypton, 2026-11-10, `security: true`) | `https://nodejs.org/dist/index.json` |
+| `node-v24.22.3-linux-x64.tar.gz` | `sha256:061ec3e3062115705b56b51fa9cc330ab50d34b6969387d4e4b1a50c6809acc2` | `SHASUMS256.txt` von nodejs.org |
+| `node-v24.22.3-linux-arm64.tar.gz` | `sha256:261af2af250dfd7e9f25cf151d1b2713a0adf8f10a9ad116c4947f68627affe8` | dto. |
+| Signatur von `SHASUMS256.txt` | gültig, Schlüssel `5BE8A3F6C8A5C01D106C0AD820B1A390B168D356` (Antoine du Hamel) | `gpgv --keyring pubring.kbx SHASUMS256.txt.sig SHASUMS256.txt` mit `nodejs/release-keys` (`gpg-only-active-keys`), im Builder `debian:13.8-slim` |
+| `libstdc++6` | `14.2.0-19` (unverändert) | `ldd /usr/local/bin/node` im Builder, minus Pakete aus base |
+| ICU-Zeitzonendaten | `2026e` | `node -p process.versions.tz` |
+| Build-Stage der Beispiel-App | `node:24.22.3-trixie-slim@sha256:4d00acb4bcc42c454c4eb801526f7ad7f772ea3bd4fd168c5cc2e384abcbb9d4` (Debian 13.8, `libc6` 2.41-12+deb13u5, npm 11.19.1) | `docker buildx imagetools inspect`, `/etc/debian_version`, `dpkg-query -W libc6` |
+
+- Tags `24.22.3` und `24.22.3-13.8`. `24.22.1` wird nicht mehr gebaut.
+- Die Ausnahme für den Build-Stage entfällt: Er beruht wieder auf derselben Debian-Version wie das Image (13.8).
+
 ## 24.22.1 – 2026-11-25 (Debian 13.8)
 
 - Eltern-Image `base:13.8` (Debian-Point-Release 13.8): `libc6` 2.41-12+deb13u5, `libssl3t64` 3.5.9-1~deb13u1, `tzdata` 2026f-0+deb13u1 und `libzstd1` 1.5.7+dfsg-1+deb13u1 (behebt CVE-2026-124851, HIGH, Offenlegung eines internen Puffers beim Dekomprimieren, DSA-6657-1).

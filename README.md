@@ -16,7 +16,7 @@ static        scratch + /etc/passwd, /etc/group, CA-Bundle   → Go, Rust (stati
 |---|---|---|
 | [static](images/static) | `13.8`, `13.8-debug` | scratch + passwd/group + CA-Bundle |
 | [base](images/base) | `13.8`, `13.8-debug` | static + glibc, libssl, tzdata |
-| [node](images/node) | `24.22.1`, `24.22.1-13.8`, jeweils auch `-debug` | base + Node.js 24 LTS |
+| [node](images/node) | `24.22.3`, `24.22.3-13.8`, jeweils auch `-debug` | base + Node.js 24 LTS |
 | [python](images/python) | `3.13.5`, `3.13.5-13.8`, jeweils auch `-debug` | base + Python 3.13 aus Debian |
 | [java](images/java) | `21.0.13.1`, `21.0.13.1-13.8`, jeweils auch `-debug` | base + OpenJDK 21 (JRE headless) aus Debian |
 
@@ -42,12 +42,12 @@ Für eine bestehende Go- oder Node-App mit Containerfile:
 
 1. **Image wählen und per Digest pinnen.** Go mit `CGO_ENABLED=0` nimmt `static`, Node-Apps nehmen `node`, Python-Apps `python`, Java-Apps `java`:
    ```bash
-   crane digest ghcr.io/thetekbrain/images/node:24.22.1
+   crane digest ghcr.io/thetekbrain/images/node:24.22.3
    ```
-   Im Containerfile wird daraus `FROM ghcr.io/thetekbrain/images/node:24.22.1@sha256:<digest>`.
+   Im Containerfile wird daraus `FROM ghcr.io/thetekbrain/images/node:24.22.3@sha256:<digest>`.
 2. **Build-Stage auf dieselbe Debian-Version bringen** (13.8, trixie), damit native Teile zur glibc passen:
    - Go: `golang:<version>-trixie`
-   - Node: `node:24.22.1-trixie-slim`, darin `npm ci --omit=dev`, dann das ganze App-Verzeichnis samt `node_modules` kopieren. Ausnahme: Dieses Tag wird nicht mehr neu gebaut und bleibt auf Debian 13.7 (glibc 2.41, wie 13.8); mit Node 24.22.3 gibt es wieder einen Build-Stage auf 13.8
+   - Node: `node:24.22.3-trixie-slim`, darin `npm ci --omit=dev`, dann das ganze App-Verzeichnis samt `node_modules` kopieren.
    - Python: `debian:13.8-slim` mit dem Python-Paket derselben Version wie im Image, darin das venv mit `uv sync` (siehe [images/python](images/python)), dann das ganze venv kopieren
    - Java: das JAR (bei Fat-JARs wie GraphHopper das fertige Release) nach `/app` kopieren. Selbst gebaut wird mit einem JDK 21; bei nativen Teilen (JNI) auf Debian 13.8, etwa mit `openjdk-21-jdk-headless` derselben Version (siehe [images/java](images/java))
 3. **Laufzeit anpassen.** Es gibt keine Shell:
@@ -248,7 +248,7 @@ brew install cosign crane
 Die Signatur stammt aus dem Workflow `images.yml` auf `main` dieses Repositorys:
 
 ```bash
-cosign verify ghcr.io/thetekbrain/images/node:24.22.1 \
+cosign verify ghcr.io/thetekbrain/images/node:24.22.3 \
   --certificate-identity 'https://github.com/thetekbrain/container-images/.github/workflows/images.yml@refs/heads/main' \
   --certificate-oidc-issuer https://token.actions.githubusercontent.com
 ```
@@ -256,7 +256,7 @@ cosign verify ghcr.io/thetekbrain/images/node:24.22.1 \
 SBOM und VEX hängen am Image der jeweiligen Plattform. Digest ermitteln, dann die SBOM verifizieren und die Paketliste ausgeben:
 
 ```bash
-digest=$(crane digest --platform linux/amd64 ghcr.io/thetekbrain/images/node:24.22.1)
+digest=$(crane digest --platform linux/amd64 ghcr.io/thetekbrain/images/node:24.22.3)
 ```
 
 ```bash
@@ -280,7 +280,7 @@ cosign verify-attestation --new-bundle-format=false --type slsaprovenance \
   --certificate-identity-regexp '^https://github.com/slsa-framework/slsa-github-generator/.github/workflows/generator_container_slsa3.yml@refs/tags/v[0-9]+\.[0-9]+\.[0-9]+$' \
   --certificate-oidc-issuer https://token.actions.githubusercontent.com \
   --certificate-github-workflow-repository thetekbrain/container-images \
-  ghcr.io/thetekbrain/images/node:24.22.1 | jq -r '.payload' | base64 -d | jq '{subject, source: .predicate.invocation.configSource}'
+  ghcr.io/thetekbrain/images/node:24.22.3 | jq -r '.payload' | base64 -d | jq '{subject, source: .predicate.invocation.configSource}'
 ```
 
 Die Ausgabe nennt den Image-Digest, das Repository und den Commit, aus dem das Image gebaut wurde.
@@ -288,7 +288,7 @@ Die Ausgabe nennt den Image-Digest, das Repository und den Commit, aus dem das I
 Alle Befehle funktionieren ohne Anmeldung bei ghcr.io; die Images sind öffentlich. In App-Repos das Image per Digest pinnen:
 
 ```bash
-crane digest ghcr.io/thetekbrain/images/node:24.22.1
+crane digest ghcr.io/thetekbrain/images/node:24.22.3
 ```
 
 ## Entscheidungen und Umgebung
@@ -354,5 +354,5 @@ Die eigenen Dateien dieses Repositorys stehen unter der [Apache License 2.0](LIC
 Die Images enthalten zusätzlich Software unter eigenen Lizenzen, etwa glibc, OpenSSL, die CA-Zertifikate, tzdata, Node.js und busybox. Deren Lizenztexte liegen im Image unter `/usr/share/doc/<paket>/copyright` bzw. `/usr/local/share/doc/node/LICENSE`. Das Label `org.opencontainers.image.licenses` jedes Images fasst alle enthaltenen Lizenzen als SPDX-Ausdruck zusammen:
 
 ```bash
-crane config ghcr.io/thetekbrain/images/node:24.22.1 | jq -r '.config.Labels["org.opencontainers.image.licenses"]'
+crane config ghcr.io/thetekbrain/images/node:24.22.3 | jq -r '.config.Labels["org.opencontainers.image.licenses"]'
 ```
